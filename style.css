@@ -1,15 +1,36 @@
 #mainContainer {
+  width: 80vw;
+  height: 80vh;
   position: absolute;
   top: 50%;
   left: 50%;
-  border: 2px solid gray;
+  margin: -40vh 0 0 -40vw;
 }
+
 .tabSelectorBtn { 
   display: inline-block;
+  border: none;
+  font-size: 1em;
+  margin: 0 0 0 0;
+  outline: none;
 }
+
+.activeTabBtn {
+  background-color: rgb(155, 155, 155);
+}
+
+.inactiveTabBtn {
+  background-color: white;
+}
+
+.inactiveTabBtn:hover {
+  background-color: rgb(199, 199, 199);
+}
+
 .activeTab {
-  
+  border: 2px solid rgb(105, 104, 104);  
 }
+
 .inactiveTab {
   display: none;
 }
