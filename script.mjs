@@ -25,3 +25,31 @@ const selectTab = (tabList, btnList, tab, btn) => {
   btn.classList.add("activeTabBtn");
   btn.classList.remove("inactiveTabBtn");
 }
+// can be daily monthly or weekly
+// has a date var that is when it should trigger
+// can be set to happen again
+class Reminder {
+  constructor(triggerDate) {
+    this.triggerDate = triggerDate;
+    this.isUpcoming(this.triggerDate);
+    const interval = setInterval(this.isUpcoming, 60000, this.triggerDate);
+  }
+
+  isUpcoming(triggerDate) {
+    const now = Date.now();
+    const milisecDifference = triggerDate.getTime() - now;
+    if(milisecDifference <= 300000) {
+      this.prepareTrigger(milisecDifference);
+      return true;
+    }
+  }
+
+  prepareTrigger(timeTillTrigger) {
+    setTimeout(this.triggerReminder, timeTillTrigger);
+  }
+
+  triggerReminder() {
+    alert("Reminder Triggered!!!!")
+  }
+
+}
