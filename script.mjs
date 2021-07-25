@@ -25,49 +25,67 @@ const selectTab = (tabList, btnList, tab, btn) => {
   btn.classList.add("activeTabBtn");
   btn.classList.remove("inactiveTabBtn");
 }
+
+[
+  {
+    hour: 16,
+    minute: 34
+  },
+  {
+    monthDay: 1,
+    hour: 4,
+    minute: 53
+  },
+  {
+    weekDayday:3,
+    hour: 17,
+    minute: 35
+  }
+]
 class ReoccuringReminder {
-  constructor() {
+  constructor(reoccurType, instances) {
+    this.creationDate = new Date();
+    this.reoccurType = reoccurType;
+    this.instances = instances;
+    this.reminderInstances = [];
+    this.setReiminderInterval;
+    
+    if(this.reoccurType === "daily") {
+      this.createDailyReminders();
+      this.setReminderInterval = setInterval(2074000000, this.createDailyReminders); //every 24 days
+    }
+  }
+
+  createDailyReminders() {
+    //set reminders for the next 24 days (settimeout limit is 24.8 days)
+    let in24Days = new Date();
+    in24Days.setDate(in24Days.getDate() + 24);
+    let currentDate = new Date();
+    while(currentDate < in24Days) {
+      for(const instance of this.instances) {
+        let copiedDate = new Date(currentDate.getTime());
+        copiedDate.setHours(instance.hour);
+        copiedDate.setMinutes(instance.minute);
+        copiedDate.setSeconds(0);
+        const reminder = new Reminder(copiedDate);
+        this.reminderInstances.push(reminder);
+      }
+    currentDate.setDate(currentDate.getDate() + 1);
+    }
     
   }
 }
+
 class Reminder {
   constructor(triggerDate) {
     this.triggerDate = triggerDate;
     this.creationDate = new Date();
-    const milisecDifference = triggerDate.getTime() - this.creationDate.getTime();
-    setTimeout(this.triggerReminder, milisecDifference);
+    const milisecDifference = this.triggerDate.getTime() - this.creationDate.getTime();
+    setTimeout(this.triggerReminder, milisecDifference, this.triggerDate);
   }
 
-  triggerReminder() {
-    alert("Reminder Triggered!!!!")
+  triggerReminder(date) {
+    console.log("Reminder Triggered!!!!", date)
   }
 
 }
-// can be daily monthly or weekly
-// has a date var that is when it should trigger
-// can be set to happen again
-// class Reminder {
-//   constructor(triggerDate) {
-//     this.triggerDate = triggerDate;
-//     this.isUpcoming(this.triggerDate);
-//     const interval = setInterval(this.isUpcoming, 60000, this.triggerDate);
-//   }
-
-//   isUpcoming(triggerDate) {
-//     const now = Date.now();
-//     const milisecDifference = triggerDate.getTime() - now;
-//     if(milisecDifference <= 300000) {
-//       this.prepareTrigger(milisecDifference);
-//       return true;
-//     }
-//   }
-
-//   prepareTrigger(timeTillTrigger) {
-//     setTimeout(this.triggerReminder, timeTillTrigger);
-//   }
-
-//   triggerReminder() {
-//     alert("Reminder Triggered!!!!")
-//   }
-
-// }
