@@ -11,7 +11,7 @@ for(const btn of tabSelectorBtns) {
     selectTab(tabs, tabSelectorBtns, correspondingTab, btn);
   }
 }
-const selectTab = (tabList, btnList, tab, btn) => {
+function selectTab(tabList, btnList, tab, btn) {
   for(const tabElem of tabList) {
     tabElem.classList.remove("activeTab");
     tabElem.classList.add("inactiveTab");
@@ -42,6 +42,7 @@ const selectTab = (tabList, btnList, tab, btn) => {
     minute: 35
   }
 ]
+
 class ReoccuringReminder {
   constructor(reoccurType, instances) {
     this.creationDate = new Date();
@@ -53,6 +54,10 @@ class ReoccuringReminder {
     if(this.reoccurType === "daily") {
       this.createDailyReminders();
       this.setReminderInterval = setInterval(2074000000, this.createDailyReminders); //every 24 days
+    }
+    else if (this.reoccurType = "weekly") {
+      this.createWeeklyReminders();
+      this.setReminderInterval = setInterval(1814000000, this.createWeeklyReminders);
     }
   }
 
@@ -72,7 +77,29 @@ class ReoccuringReminder {
       }
     currentDate.setDate(currentDate.getDate() + 1);
     }
-    
+  }
+  createWeeklyReminders() {//sets reminders for the next 21 days (3 weeks)
+    let in3Weeks = new Date();
+    in3Weeks.setDate(in3Weeks.getDate() + 21);
+    let currentDate = new Date();
+    while(currentDate < in3Weeks) {
+      for(const instance of this.instances) {
+        const weekDay = currentDate.getDay() + 1; 
+        let copiedDate = new Date(currentDate.getTime());
+        if(instance.weekDay === weekDay) {
+          copiedDate.setHours(instance.hour);
+          copiedDate.setMinutes(instance.minute);
+          copiedDate.setSeconds(0);
+          const reminder = new Reminder(copiedDate);
+          this.reminderInstances.push(reminder);
+        }
+      }
+      currentDate.setDate(currentDate.getDate() + 1);
+    }
+
+  }
+  createMonthlyReminders() {
+   
   }
 }
 
