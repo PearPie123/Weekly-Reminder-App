@@ -55,38 +55,33 @@ class ReoccuringReminder {
       this.createDailyReminders();
       this.setReminderInterval = setInterval(2074000000, this.createDailyReminders); //every 24 days
     }
-    else if (this.reoccurType = "weekly") {
+    else if(this.reoccurType === "weekly") {
       this.createWeeklyReminders();
       this.setReminderInterval = setInterval(1814000000, this.createWeeklyReminders);
     }
-  }
-
-  createDailyReminders() {
-    //set reminders for the next 24 days (settimeout limit is 24.8 days)
-    let in24Days = new Date();
-    in24Days.setDate(in24Days.getDate() + 24);
-    let currentDate = new Date();
-    while(currentDate < in24Days) {
-      for(const instance of this.instances) {
-        let copiedDate = new Date(currentDate.getTime());
-        copiedDate.setHours(instance.hour);
-        copiedDate.setMinutes(instance.minute);
-        copiedDate.setSeconds(0);
-        const reminder = new Reminder(copiedDate);
-        this.reminderInstances.push(reminder);
-      }
-    currentDate.setDate(currentDate.getDate() + 1);
+    else if(this.reoccurType === "monthly") {
+      this.createMonthlyReminders();
+      this.setReminderInterval = setInterval(1210000000, this.createMonthlyReminders);
     }
   }
-  createWeeklyReminders() {//sets reminders for the next 21 days (3 weeks)
-    let in3Weeks = new Date();
-    in3Weeks.setDate(in3Weeks.getDate() + 21);
+  createReminders(periodLength) {
+    const daysToSet = (periodLength === "daily")
+      ? 24
+      : (periodLength === "weekly")
+      ? 21
+      : 14;
+    let stoppingDate = new Date();
+    stoppingDate.setDate(stoppingDate.getDate() + daysToSet);
     let currentDate = new Date();
-    while(currentDate < in3Weeks) {
+    while(currentDate < stoppingDate) {
       for(const instance of this.instances) {
-        const weekDay = currentDate.getDay() + 1; 
         let copiedDate = new Date(currentDate.getTime());
-        if(instance.weekDay === weekDay) {
+        const isDaily = (periodLength === "daily");
+        const isWeekly = (periodLength === "weekly");
+        const isMonthly = (periodLength === "monthly");
+        const isCorrectWeekday = (instance.weekDay === currentDate.getDay() + 1);
+        const isCorrectMonthday = (instance.monthDay === currentDate.getDate());
+        if ((isDaily) || (isWeekly && isCorrectWeekday) || (isMonthly && isCorrectMonthday)) {
           copiedDate.setHours(instance.hour);
           copiedDate.setMinutes(instance.minute);
           copiedDate.setSeconds(0);
@@ -96,10 +91,6 @@ class ReoccuringReminder {
       }
       currentDate.setDate(currentDate.getDate() + 1);
     }
-
-  }
-  createMonthlyReminders() {
-   
   }
 }
 
