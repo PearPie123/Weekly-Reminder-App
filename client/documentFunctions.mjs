@@ -3,7 +3,7 @@ function setTabBtnHandlers() {
   const btnToTabIdKey = {
     "todoTabBtn": "todoTab",
     "upcomingTabBtn": "upcomingTab",
-    "recentTabBtn": "recentTab",
+    "viewRemindersTabBtn": "viewRemindersTab",
     "createReminderBtn": "createReminderTab"
   }
   for(const btn of tabSelectorBtns) {
@@ -93,6 +93,14 @@ function setReminderCreationBtns() {
   reminderTypeInput.addEventListener("change", () => {
     document.getElementById("reminderInstancesList").innerHTML = "";
   });
+}
+function displayActiveReminders() {
+  const displayTab = document.getElementById("viewRemindersTab");
+  const reminderData = JSON.parse(localStorage.getItem("remindersData"));
+  displayTab.innerHTML = "";
+}
+function createReminderDisplayElement(reminderType, reminder ) {
+  const fragment = new DocumentFragment();
 }
 function init() {
   setReminderCreationBtns();

@@ -1,12 +1,7 @@
 function sendFormData(formId) {
   const form = document.getElementById(formId);
   const formData = [...new FormData(form)];
-  let instanceEntries = [];
-  for(const entry of formData) {
-    if(entry[0].startsWith("instance")) {
-      instanceEntries.push(entry);
-    }
-  }
+  let instanceEntries = formData.filter(entry => (entry[0].startsWith("instance")));
 
   let instances = [];
   for(const entry of instanceEntries) {

@@ -1,0 +1,24 @@
+{
+  "name": "weekly-reminder-app",
+  "version": "1.0.0",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PearPie123/Weekly-Reminder-App.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/PearPie123/Weekly-Reminder-App/issues"
+  },
+  "homepage": "https://github.com/PearPie123/Weekly-Reminder-App#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "npm": "^7.20.5",
+    "npm-collect": "^1.0.5"
+  },
+  "description": ""
+}
