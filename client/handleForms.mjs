@@ -3,9 +3,11 @@ function sendFormData(formId) {
   const formData = [...new FormData(form)];
   let instanceEntries = formData.filter(entry => (entry[0].startsWith("instance")));
 
+  console.log(instanceEntries);
   let instances = [];
   for(const entry of instanceEntries) {
     const entryNum = parseInt(entry[0].charAt(entry[0].length - 1))
+    entry[0] = entry[0].slice(0, -1);//should work test later
     if(instances.length !== entryNum) {
       let newInstance = [];
       newInstance.push(entry);
@@ -15,9 +17,10 @@ function sendFormData(formId) {
       instances[entryNum - 1].push(entry);
     }
   }
-
+  console.log(instances)
   const instancesObj = instances.map((instanceArr) => {
-    return Object.fromEntries(instanceArr);
+    const obj = Object.fromEntries(instanceArr);
+    return obj;
   });
 
   const reminderDataOnly = formData.filter(entry => !(entry[0].startsWith("instance")));
@@ -28,7 +31,23 @@ function sendFormData(formId) {
     localStorage.setItem("remindersData", "[]");
   }
   const remindersArr = JSON.parse(localStorage.getItem("remindersData"));
-  remindersArr.push(completeReminderObj);
+  let reminderInExistence = false; 
+  for(const reminder of remindersArr) {
+    if(reminder.reminderName === completeReminderObj.reminderName) {
+      const reminderIndex = remindersArr.indexOf(reminder);
+      remindersArr[reminderIndex] = completeReminderObj;
+      reminderInExistence = true;
+    }
+  }
+  // const existingRemindersNames = remindersArr.map((reminder) => {
+  //   return reminder.reminderName;
+  // });
+  // if(existingRemindersNames.includes(completeReminderObj.reminderName)) {
+    
+  // }
+  if(!reminderInExistence) {
+    remindersArr.push(completeReminderObj);
+  }
   localStorage.setItem("remindersData", JSON.stringify(remindersArr));
   setReminders(JSON.stringify(remindersArr));
 }
@@ -55,6 +74,22 @@ function setReminders(remindersJson) {
     }
     const reminder = new ReoccuringReminder(reminderData.reminderType, convertedInstances);
   }
+}
+
+function prefillForm(reminderData) {
+  const reminderNameInput = document.getElementById("reminderNameInput");
+  const reminderMsgInput = document.getElementById("reminderMessage");
+  const reminderTypeInput = document.getElementById("reminderTypeInput");
+  reminderNameInput.value = reminderData.reminderName;
+  reminderMsgInput.value = reminderData.reminderMessage;
+  reminderTypeInput.value = reminderData.reminderType;
+  document.getElementById("reminderInstancesList").innerHTML = "";
+  for(const instance of reminderData.instances) {
+    const instanceNum = document.getElementsByClassName("reminderInstanceContainer").length + 1;
+    const reminderHtml = createReminderInstance(instanceNum, reminderData.reminderType, instance);
+    document.getElementById("reminderInstancesList").appendChild(reminderHtml);
+  }
+  
 }
 
 

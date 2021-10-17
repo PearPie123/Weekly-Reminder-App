@@ -55,7 +55,9 @@ class Reminder {
     this.triggerDate = triggerDate;
     this.creationDate = new Date();
     const milisecDifference = this.triggerDate.getTime() - this.creationDate.getTime();
-    setTimeout(this.triggerReminder, milisecDifference, this.triggerDate);
+    if(milisecDifference > 0) {
+      setTimeout(this.triggerReminder, milisecDifference, this.triggerDate);
+    }
   }
 
   triggerReminder(date) {
