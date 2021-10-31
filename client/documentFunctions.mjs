@@ -31,13 +31,12 @@ function selectTab(tabList, btnList, selectedTab, selectedTabBtn) {
 function createReminderInstance(instanceNum, type, data) {
   const fragment = new DocumentFragment();
   const instanceContainer = document.createElement("div");
-  instanceContainer.classList.add(`reminderInstanceContainer`);
+  instanceContainer.classList.add("reminderInstanceContainer", "shownInstance");
   
-  const monthDayContainer = document.createElement("div");
-  monthDayContainer.classList.add
-  instanceContainer.appendChild(monthDayContainer);
+
   const monthDayLabel = document.createElement("label");
-  monthDayContainer.appendChild(monthDayLabel);
+  monthDayLabel.classList.add("instanceInputLabel", "instanceDayPicker")
+  instanceContainer.appendChild(monthDayLabel);
   monthDayLabel.textContent = "Day of the month: ";
   const monthDayInput = document.createElement("input");
   monthDayLabel.appendChild(monthDayInput);
@@ -45,11 +44,12 @@ function createReminderInstance(instanceNum, type, data) {
   monthDayInput.setAttribute("min", "1");
   monthDayInput.setAttribute("max", "31");
   monthDayInput.setAttribute("name", `instanceMonthDay${instanceNum}`);
+  monthDayInput.classList.add("instanceInput");
   
-  const weekDayContainer = document.createElement("div");
-  instanceContainer.appendChild(weekDayContainer);
+
   const weekDayLabel = document.createElement("label")
-  weekDayContainer.appendChild(weekDayLabel);
+  weekDayLabel.classList.add("instanceInputLabel", "instanceDayPicker")
+  instanceContainer.appendChild(weekDayLabel);
   weekDayLabel.textContent = "Day of the week: ";
   const weekDayInput = document.createElement("input");
   weekDayLabel.appendChild(weekDayInput);
@@ -57,16 +57,29 @@ function createReminderInstance(instanceNum, type, data) {
   weekDayInput.setAttribute("min", "1");
   weekDayInput.setAttribute("max", "7");
   weekDayInput.setAttribute("name", `instanceWeekDay${instanceNum}`);
+  weekDayInput.classList.add("instanceInput");
 
-  const timeContainer = document.createElement("div");
-  instanceContainer.appendChild(timeContainer);
+  
+  
   const timeLabel = document.createElement("label");
-  timeContainer.appendChild(timeLabel);
+  timeLabel.classList.add("instanceInputLabel", "instanceTimePicker")
+  instanceContainer.appendChild(timeLabel);
   timeLabel.textContent = "Time: ";
   const timeInput = document.createElement("input");
   timeLabel.appendChild(timeInput);
   timeInput.setAttribute("type", "time");
   timeInput.setAttribute("name", `instanceTime${instanceNum}`);
+  timeInput.classList.add("instanceInput");
+  
+  const deleteBtn = document.createElement("button");
+  deleteBtn.classList.add("deleteBtn");
+  deleteBtn.setAttribute("id", "deleteInstanceBtn");
+  deleteBtn.setAttribute("type", "button");
+  const trashIcon = document.createElement("span");
+  trashIcon.classList.add("material-icons");
+  trashIcon.textContent = "clear";
+  deleteBtn.appendChild(trashIcon);
+  instanceContainer.appendChild(deleteBtn);
   
   if(data !== undefined) {
     monthDayInput.value = data.instanceMonthDay;
@@ -74,14 +87,14 @@ function createReminderInstance(instanceNum, type, data) {
     timeInput.value = data.instanceTime;
   }
   if(type === "daily"){
-    monthDayContainer.classList.add("hidden");
-    weekDayContainer.classList.add("hidden");
+    monthDayLabel.classList.replace("instanceInputLabel", "hidden");
+    weekDayLabel.classList.replace("instanceInputLabel", "hidden");
   }
   else if(type === "weekly"){
-    monthDayContainer.classList.add("hidden");
+    monthDayLabel.classList.replace("instanceInputLabel", "hidden");
   }
   else if(type === "monthly") {
-    weekDayContainer.classList.add("hidden");
+    weekDayLabel.classList.replace("instanceInputLabel", "hidden");
   }
   fragment.appendChild(instanceContainer);
   return fragment;
@@ -94,7 +107,10 @@ function setReminderCreationBtns() {
       const instanceNum = document.getElementsByClassName("reminderInstanceContainer").length + 1;
       const reminderType = document.getElementById("reminderTypeInput").value;
       const instance = createReminderInstance(instanceNum, reminderType);
-      document.getElementById("reminderInstancesList").appendChild(instance);
+      const list = document.getElementById("reminderInstancesList")
+      list.appendChild(instance);
+      list.lastChild.scrollIntoView({behavior: "smooth", });
+      //list.scrollTop = list.scrollHeight;
   });
   const submitBtn = document.getElementById("submitBtn");
   submitBtn.addEventListener("click",() => {sendFormData("createReminderForm")})
@@ -112,5 +128,7 @@ function setReminderCreationBtns() {
 function init() {
   setReminderCreationBtns();
   setTabBtnHandlers();
+  setReminders(JSON.parse(localStorage.getItem("remindersData")));
+  displayActiveReminders();
 }
 init();

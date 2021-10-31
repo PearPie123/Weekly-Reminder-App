@@ -30,7 +30,7 @@ function sendFormData(formId) {
   if(localStorage.getItem("remindersData") === null) {
     localStorage.setItem("remindersData", "[]");
   }
-  const remindersArr = JSON.parse(localStorage.getItem("remindersData"));
+  let remindersArr = JSON.parse(localStorage.getItem("remindersData"));
   let reminderInExistence = false; 
   for(const reminder of remindersArr) {
     if(reminder.reminderName === completeReminderObj.reminderName) {
@@ -39,21 +39,24 @@ function sendFormData(formId) {
       reminderInExistence = true;
     }
   }
-  // const existingRemindersNames = remindersArr.map((reminder) => {
-  //   return reminder.reminderName;
-  // });
-  // if(existingRemindersNames.includes(completeReminderObj.reminderName)) {
-    
-  // }
+
   if(!reminderInExistence) {
     remindersArr.push(completeReminderObj);
   }
+  const reminderTimeoutIds = JSON.parse(localStorage.getItem("reminderTimeoutIds"));
+  if(!reminderTimeoutIds === null) {
+    for(const timeout of reminderTimeoutIds) {
+      clearTimeout(timeout);
+    }
+  }
+  
+
+  setReminders(remindersArr);
   localStorage.setItem("remindersData", JSON.stringify(remindersArr));
-  setReminders(JSON.stringify(remindersArr));
+  
 }
 
-function setReminders(remindersJson) {
-  const remindersArr = JSON.parse(remindersJson);
+function setReminders(remindersArr) {
   for(const reminderData of remindersArr) {
     let convertedInstances = [];
     for(const instance of reminderData.instances) {
@@ -72,7 +75,7 @@ function setReminders(remindersJson) {
       }
       convertedInstances.push(convertedInstance);
     }
-    const reminder = new ReoccuringReminder(reminderData.reminderType, convertedInstances);
+    const reminder = new ReoccuringReminder(reminderData.reminderName, reminderData.reminderMessage, reminderData.reminderType, convertedInstances);
   }
 }
 

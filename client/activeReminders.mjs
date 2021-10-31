@@ -22,6 +22,7 @@ function createReminderDisplayElement(reminderData) {
   const editReminderBtn = document.createElement("button");
   editReminderBtn.classList.add("editReminderBtn");
   editReminderBtn.textContent = "Edit and view reminder";
+  editReminderBtn.classList.add("basicBtn");
   editReminderBtn.addEventListener("click", ()=> {
     prefillForm(reminderData);
     const tabs = document.getElementsByClassName("tab");
@@ -31,7 +32,20 @@ function createReminderDisplayElement(reminderData) {
     const tabBtn = document.getElementById("createReminderBtn");
     selectTab(tabs, tabSelectorBtns, createReminderTab, tabBtn);
   });
-  container.append(name, message, editReminderBtn);
+  const deleteReminderBtn = document.createElement("button");
+  deleteReminderBtn.classList.add("basicBtn", "deleteBtn");
+  const icon = document.createElement("span");
+  icon.classList.add( "material-icons");
+  icon.textContent = "clear";
+  deleteReminderBtn.appendChild(icon);
+  deleteReminderBtn.addEventListener("click", () => {
+    console.log(reminderData);
+    const remindersData = JSON.parse(localStorage.getItem("remindersData"));
+    const deletedRemindersData = remindersData.filter((reminder) => {return reminder.reminderName !== reminderData.reminderName});
+    localStorage.setItem("remindersData", JSON.stringify(deletedRemindersData));
+    displayActiveReminders();
+  });
+  container.append(name, message, editReminderBtn, deleteReminderBtn);
   fragment.appendChild(container);
   return fragment;
 }

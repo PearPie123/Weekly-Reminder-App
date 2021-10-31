@@ -1,5 +1,7 @@
 class ReoccuringReminder {
-  constructor(reoccurType, instances) {
+  constructor(name, message, reoccurType, instances) {
+    this.name = name;
+    this.message = message;
     this.creationDate = new Date();
     this.reoccurType = reoccurType;
     this.instances = instances;
@@ -16,6 +18,7 @@ class ReoccuringReminder {
     else if(this.reoccurType === "monthly") {
       this.setReminderInterval = setInterval(1210000000, this.createReminders, reoccurType);
     }
+    this.storeTimeoutIds();
   }
 
   createReminders(periodLength) {
@@ -40,28 +43,55 @@ class ReoccuringReminder {
           copiedDate.setHours(instance.hour);
           copiedDate.setMinutes(instance.minute);
           copiedDate.setSeconds(0);
-          const reminder = new Reminder(copiedDate);
+          console.log(this.name, this.message);
+          const reminder = new Reminder(copiedDate, this.name, this.message);
           this.reminderInstances.push(reminder);
         }
       }
       currentDate.setDate(currentDate.getDate() + 1);
     }
+    this.storeTimeoutIds();
+  }
+  
+  storeTimeoutIds() {
+    let timeouts = [];
+    timeouts.push(this.setReminderInterval);
+    for(const reminder of this.reminderInstances) {
+      timeouts.push(reminder.timeout);
+    }
+    timeouts = timeouts.filter((timeout) => {
+      return timeout !== undefined;
+    });
+    console.log("ids", timeouts)
+    localStorage.setItem("reminderTimeoutIds",JSON.stringify(timeouts))
   }
 
+  clear() {
+    for(const reminder of this.reminderInstances){
+      reminder.clearTimeout();
+    }
+    clearInterval(this.setReminderInterval);
+  }
 }
 
 class Reminder {
-  constructor(triggerDate) {
+  constructor(triggerDate, parentReminderName, parentReminderMessage) {
+    this.parentReminderName = parentReminderName;
+    this.parentReminderMessage = parentReminderMessage;
     this.triggerDate = triggerDate;
     this.creationDate = new Date();
     const milisecDifference = this.triggerDate.getTime() - this.creationDate.getTime();
     if(milisecDifference > 0) {
-      setTimeout(this.triggerReminder, milisecDifference, this.triggerDate);
+      this.timeout = setTimeout(() => {this.triggerReminder(this.triggerDate)}, milisecDifference);
     }
+  }
+  
+  clearReminder() {
+    clearTimeout(this.timeout);
   }
 
   triggerReminder(date) {
-    console.log("Reminder Triggered!!!!", date)
+    sendNotification(this.parentReminderName, this.parentReminderMessage);
   }
 
 }
