@@ -5,15 +5,19 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
       rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/custom-select@1.1.15/build/custom-select.min.css">
     <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/custom-select@1.1.15/build/custom-select.min.js" type="text/javascript"></script>
     <script defer="true"src="handleForms.mjs"></script>
     <script defer="true"src="reminders.mjs"></script>
     <script defer="true"src="activeReminders.mjs"></script>
     <script defer="true"src="documentFunctions.mjs"></script>
     <script defer="true"src="triggerReminders.mjs"></script>
-    
   </head>
 
   <body>
@@ -27,32 +31,31 @@
       --><div id="viewRemindersTab" class="tab activeTab"></div>
 
       <div id="createReminderTab" class="tab hidden">
-        <form action="" id="createReminderForm">
+        <form action="" id="createReminderForm" autocomplete="off">
           <div id="reminderInfoContainer">
-            <h3>Reminder info</h3>
+            <!-- <h3>Reminder info</h3> -->
             <div id="reminderNameInputContainer" class="inputLabelPair">
-              <label class="inputLabel"> Reminder name
+              <label class="largerText"> Reminder name
                 <input name="reminderName" type="text" id="reminderNameInput" minlength="1" placeholder="Eg. Take out the trash">
               </label>
             </div>
             <div id="reminderMessageInputContainer" class="inputLabelPair">
-              <label class="inputLabel"> Message
-                <textarea name="reminderMessage" id="reminderMessage" minlength="1" placeholder="idk"></textarea>
+              <label class="largerText"> Message
+                <textarea name="reminderMessage" id="reminderMessage" minlength="1" placeholder="Eg. Make sure to get the recycling bin too!"></textarea>
               </label>
             </div>
             <div id="reminderTypeInputContainer" class="inputLabelPair">
-              <label class="inputLabel"> Reoccurence period
+              <label class="inputLabel largerText"> Reoccurence period
                 <select name="reminderType" id="reminderTypeInput">
                   <option value="daily">Reoccur daily</option>
                   <option value="weekly">Reoccur weekly</option>
                   <option value="monthly">Reoccure monthly</option>
-                  <option value="once">Occur once</option>
                 </select>
               </label>
             </div>
           </div>
           <div id="reminderInstancesContainer">
-            <h3>Create instances</h3>
+            <p class="largerText">Create instances</p>
             <div id="reminderInstancesList"></div>
             <button type="button" id="newInstanceBtn" class="basicBtn">New instance</button>
             <button type="button" id="submitBtn" class="basicBtn">Create reminder</button>

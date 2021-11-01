@@ -11,18 +11,23 @@ function displayActiveReminders() {
     displayTab.appendChild(reminderElem);
   }
 }
+
 function createReminderDisplayElement(reminderData) {
   const fragment = new DocumentFragment();
   const container = document.createElement("div");
   container.classList.add("activeReminderContainer");
   const name = document.createElement("p");
-  name.textContent = `Name: ${reminderData.reminderName}`;
+  name.textContent = reminderData.reminderName;
   const message = document.createElement("p");
-  message.textContent = `Message: ${reminderData.reminderMessage}`;
+  message.textContent = reminderData.reminderMessage;
+  name.classList.add("reminderInfo", "reminderName");
+  message.classList.add("reminderInfo", "reminderMessage");
   const editReminderBtn = document.createElement("button");
   editReminderBtn.classList.add("editReminderBtn");
-  editReminderBtn.textContent = "Edit and view reminder";
-  editReminderBtn.classList.add("basicBtn");
+  const editIcon = document.createElement("span");
+  editIcon.classList.add("material-icons");
+  editIcon.textContent = "edit";
+  editReminderBtn.appendChild(editIcon);
   editReminderBtn.addEventListener("click", ()=> {
     prefillForm(reminderData);
     const tabs = document.getElementsByClassName("tab");
@@ -35,7 +40,7 @@ function createReminderDisplayElement(reminderData) {
   const deleteReminderBtn = document.createElement("button");
   deleteReminderBtn.classList.add("basicBtn", "deleteBtn");
   const icon = document.createElement("span");
-  icon.classList.add( "material-icons");
+  icon.classList.add("material-icons");
   icon.textContent = "clear";
   deleteReminderBtn.appendChild(icon);
   deleteReminderBtn.addEventListener("click", () => {
@@ -43,7 +48,8 @@ function createReminderDisplayElement(reminderData) {
     const remindersData = JSON.parse(localStorage.getItem("remindersData"));
     const deletedRemindersData = remindersData.filter((reminder) => {return reminder.reminderName !== reminderData.reminderName});
     localStorage.setItem("remindersData", JSON.stringify(deletedRemindersData));
-    displayActiveReminders();
+    //displayActiveReminders();
+    deleteElementAnim(container);
   });
   container.append(name, message, editReminderBtn, deleteReminderBtn);
   fragment.appendChild(container);

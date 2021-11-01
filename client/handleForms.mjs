@@ -82,10 +82,10 @@ function setReminders(remindersArr) {
 function prefillForm(reminderData) {
   const reminderNameInput = document.getElementById("reminderNameInput");
   const reminderMsgInput = document.getElementById("reminderMessage");
-  const reminderTypeInput = document.getElementById("reminderTypeInput");
+  const customSelect = document.getElementById("reminderTypeInput").customSelect;
   reminderNameInput.value = reminderData.reminderName;
   reminderMsgInput.value = reminderData.reminderMessage;
-  reminderTypeInput.value = reminderData.reminderType;
+  customSelect.value = reminderData.reminderType;
   document.getElementById("reminderInstancesList").innerHTML = "";
   for(const instance of reminderData.instances) {
     const instanceNum = document.getElementsByClassName("reminderInstanceContainer").length + 1;

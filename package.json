@@ -16,6 +16,7 @@
   },
   "homepage": "https://github.com/PearPie123/Weekly-Reminder-App#readme",
   "dependencies": {
+    "custom-select": "^1.1.15",
     "express": "^4.17.1",
     "npm": "^7.20.5",
     "npm-collect": "^1.0.5"

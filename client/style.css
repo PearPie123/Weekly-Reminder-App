@@ -4,14 +4,15 @@
   --main-color-3: #668dcc;
   --main-color-4: #b2c5e7;
   --delete-red: #ff3d3d;
-  font-family: Montserrat;
-  font-size: calc(10px + 0.5vw);
+  font-family: "Montserrat";
+  font-size: calc(7px + 0.5vw);
   color: white;
   background-color: var(--main-color-3);
 }
 button {
+  appearance: none;
   color:white;
-  font-family: Montserrat;
+  font-family: "Open Sans";
   font-size: 1rem; 
 }
 
@@ -26,7 +27,7 @@ button {
 
 .tabSelectorBtn { 
   display: inline-block;
-  font-size: 1.5rem;
+  font-size: 1.7rem;
   font-family: inherit;
   margin: 0 0 0 0;
   outline: none;
@@ -51,9 +52,10 @@ button {
 .activeTab {
   margin: 0 0 0 0;
   border: 2px solid var(--main-color-1);
-  width: 100%;
   height: 70vh;
-  overflow: auto;  
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding: 0.5vh 0.5vw;  
 }
 
 .hidden {
@@ -71,18 +73,15 @@ button {
   padding: 0;
 }
 
-.activeReminderContainer {
-  padding: 2%;
-}
-
 .basicBtn {
   border: 2px solid transparent;
-  background-color: var(--main-color-2);
+  background-color: var(--main-color-1);
+  color: white;
   border-radius: 5px 5px 5px 5px;
 }
 
 .basicBtn:hover {
-  border-color:var(--main-color-1);
+  filter:brightness(150%);
 }
 
 input[type=text]:focus, textarea:focus {
@@ -111,7 +110,7 @@ input[type=text], textarea{
   width: min-content;
   white-space: nowrap;
   padding: 0.3vw;
-  margin: 2%;
+  margin: 1.5vw;
   animation-name: instanceCreationAnim;
   animation-duration: 0.3s;
   animation-iteration-count: 1;
@@ -136,21 +135,27 @@ input[type=text], textarea{
   margin: inherit;
 }
 
-.instanceDayPicker {
+/* .instanceDayPicker {
 
 }
 .instanceTimePicker {
 
-}
+} */
 
 .instanceInputLabel {
   display: block;
   margin: 0.3vh;
 }
 
+.largerText {
+  font-size: 1.3rem;
+  font-family: "Open Sans";
+}
+
 #deleteInstanceBtn {
   width: 100%;
   height: 10%;
+  margin: 0;
 }
 .deleteBtn:hover {
   /*background-color: var(--main-color-2);*/
@@ -159,7 +164,86 @@ input[type=text], textarea{
 }
 
 .deleteBtn {
+  display: block;
   background-color: var(--delete-red);
   border: 1px solid var(--delete-red);
   transition: all 0.3s;
+  margin: 0.5vh 0;
+  width: 100%;
+}
+
+@keyframes deleteAnim {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
+.delete {
+  animation: deleteAnim 0.3s;
+  animation-fill-mode: forwards; 
+}
+
+.activeReminderContainer {
+  min-width: 15vw;
+  margin: 1vh 0.2vw;
+  padding: 0.5vw;
+  width: min-content;
+  white-space: nowrap;
+  background-color: var(--main-color-2);
+  border-radius: 5px;
+}
+
+.reminderName {
+  font-size: 1.2rem;
+}
+
+.editReminderBtn {
+  display: block;
+  background-color: var(--main-color-1);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  outline: none;
+  margin: 0.5vh 0;
+  width: 100%;
+  transition: all 0.3s;
+}
+
+.editReminderBtn:hover {
+  filter: brightness(150%);
+}
+
+.custom-select-container {
+  width: 20vw;
+  background-color: var(--main-color-3);
+}
+
+.custom-select-opener {
+  background-color: var(--main-color-2);
+  border-radius: 5px;
+  font-size: 1rem;
+  overflow: hidden;
+}
+
+.custom-select-opener:focus {
+  outline: none;
+}
+
+.custom-select-panel {
+ background-color: var(--main-color-2);
+ border-radius: 5px;
+ font-size: 1rem;
+ transition: max-height .3s ease-out, overflow-y 0.1s 0.5s;
+}
+
+.custom-select-option.is-selected {
+
+}
+
+.custom-select-option.is-selected::before {
+  content: none;
 }

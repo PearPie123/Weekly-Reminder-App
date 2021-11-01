@@ -1,8 +1,6 @@
 function setTabBtnHandlers() {
   const tabSelectorBtns = document.getElementsByClassName("tabSelectorBtn");
   const btnToTabIdKey = {
-    "todoTabBtn": "todoTab",
-    "upcomingTabBtn": "upcomingTab",
     "viewRemindersTabBtn": "viewRemindersTab",
     "createReminderBtn": "createReminderTab"
   }
@@ -78,6 +76,9 @@ function createReminderInstance(instanceNum, type, data) {
   const trashIcon = document.createElement("span");
   trashIcon.classList.add("material-icons");
   trashIcon.textContent = "clear";
+  deleteBtn.addEventListener("click", () => {
+    deleteElementAnim(instanceContainer);
+  });
   deleteBtn.appendChild(trashIcon);
   instanceContainer.appendChild(deleteBtn);
   
@@ -100,6 +101,10 @@ function createReminderInstance(instanceNum, type, data) {
   return fragment;
 }
 
+function deleteElementAnim (element) {
+  element.classList.add("delete");
+  setTimeout(() => {element.remove()}, 300);
+}
 
 function setReminderCreationBtns() {
   const addInstanceBtn = document.getElementById("newInstanceBtn");
@@ -110,10 +115,18 @@ function setReminderCreationBtns() {
       const list = document.getElementById("reminderInstancesList")
       list.appendChild(instance);
       list.lastChild.scrollIntoView({behavior: "smooth", });
-      //list.scrollTop = list.scrollHeight;
   });
   const submitBtn = document.getElementById("submitBtn");
-  submitBtn.addEventListener("click",() => {sendFormData("createReminderForm")})
+  submitBtn.addEventListener("click",() => {
+    sendFormData("createReminderForm");
+    displayActiveReminders();
+    const tabs = document.getElementsByClassName("tab");
+    const tabSelectorBtns = 
+    document.getElementsByClassName("tabSelectorBtn");
+    const viewRemindersTab = document.getElementById("viewRemindersTab");
+    const tabBtn = document.getElementById("viewRemindersTabBtn");
+    selectTab(tabs, tabSelectorBtns, viewRemindersTab, tabBtn);
+  });
   const reminderTypeInput = document.getElementById("reminderTypeInput");
   reminderTypeInput.addEventListener("change", () => {
     document.getElementById("reminderInstancesList").innerHTML = "";
@@ -124,8 +137,13 @@ function setReminderCreationBtns() {
   });
 }
 
+function initCustomSelect() {
+  const reminderSelect = document.getElementById("reminderTypeInput");
+  customSelect(reminderSelect);
+}
 
 function init() {
+  initCustomSelect();
   setReminderCreationBtns();
   setTabBtnHandlers();
   setReminders(JSON.parse(localStorage.getItem("remindersData")));
